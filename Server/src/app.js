@@ -5,10 +5,15 @@ import clientsRoutes from "./routes/clients.routes.mjs";
 import ejerciciosRoutes from "./routes/ejercicios.routes.mjs";
 import rutinesRoutes from "./routes/rutines.routes.mjs";
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 
 
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+}));
 
 app.use(morgan('dev'));
 
