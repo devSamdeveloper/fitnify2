@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 dotenv.config()
+import jwt from 'jsonwebtoken'
 
 export function createAccesToken (payload) {
 
@@ -9,7 +9,7 @@ export function createAccesToken (payload) {
             payload, 
             process.env.TOKEN_SECRET, 
             {
-                expiresIn: "1d"
+                expiresIn: "8760h"
             }, 
             
             (err,token) => {

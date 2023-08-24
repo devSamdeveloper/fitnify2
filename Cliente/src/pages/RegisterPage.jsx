@@ -1,8 +1,23 @@
 import { useForm } from 'react-hook-form';
-import { registerRequest } from '../api/auth.mjs';
+import { useAuth } from '../context/AuthContext';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
-    const { register, handleSubmit } = useForm();
+    
+    const { register, handleSubmit, formState : {errors} } = useForm();
+    
+    const { signup, isAuthenticated, errors: registerErrors } = useAuth();
+
+    const navigate = useNavigate();
+    
+    useEffect(()=>{
+        if(isAuthenticated) navigate('/dashboard')
+    }, [isAuthenticated])
+
+    const submit = handleSubmit(async (values) => {
+            signup(values)
+        });
 
     return (
         
@@ -17,24 +32,47 @@ function RegisterPage() {
                         </div>
                         <div className='px-10 pt-4 pb-8 bg-white rounded-tr-4xl'>
                             <h1 className='text-2xl font-semibold text-gray-700'>Fornulario de Registro</h1>
+                            
+                            {
+                                
+                             registerErrors.map((error, i) => (
+                             <div className='bg-red-500 p-2 text-white mt-6 rounded-md text-xs text-center' key={i}>
+                                 {error}
+                             </div>
+                             ))
+                        
+                                
+                            }
 
-                            <form onSubmit={handleSubmit( async values => {
-                                const res = await registerRequest (values)
-                                console.log(res)
-                                })} className='mt-12'>
+                            <form onSubmit={submit} className='mt-12'>
 
                                 <div className='relative'>
                                     <input type='text' {...register("name", { required: true })} id="name" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-purple-600" placeholder="Gimnasio Increible" />
                                     <label htmlFor="name" className='absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm'>Nombre del Gimnasio</label>
                                 </div>
+                                {
+                                    errors.name && (
+                                        <p className='text-red-500'>El nombre es Requerido</p>
+                                    )
+                                }
                                 <div className='mt-10 relative'>
                                     <input type='email' {...register("email", { required: true })} id="email" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-purple-600" placeholder="ejepmplo@ejemplo.com" />
                                     <label htmlFor="email" className='absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm'>Email</label>
                                 </div>
+                                {
+                                    errors.email && (
+                                        <p className='text-red-500'>El email es Requerido</p>
+                                    )
+                                }
                                 <div className='mt-10 relative'>
                                     <input type='password' {...register("password", { required: true })} id="password" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-purple-600" placeholder="ejepmplo@ejemplo.com" />
                                     <label htmlFor="password" className='absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm'>Contrtaseña</label>
                                 </div>
+                                {
+                                    errors.password && (
+                                        <p className='text-red-500'>La contraseña es Requerida</p>
+                                    )
+                                }
                                 <button type='submit' className='mt-20 px-4 py-2 rounded bg-purple-800 hover:bg-purple-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer'>Registrar</button>
                             </form>
                         </div>
