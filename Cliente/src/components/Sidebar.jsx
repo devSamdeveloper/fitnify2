@@ -7,7 +7,7 @@ const Sidebar = () => {
     const  [showMenu, setShowMenu]  = useState(false);
     return (
         <>
-            <div className={`bg-primary-900 h-full fixed lg:static w-[80%] md:w-[40%] lg:w-full left-0 transition-all duration-300 ${showMenu ? "left-0" : "-left-full"}`}>
+            <div className={`bg-primary-900 h-full fixed lg:static w-[80%] md:w-[40%] lg:w-full left-0 transition-all duration-300 ${showMenu ? "left-0" : "-left-full"} z-50`}>
 
                 {/* profile */}
 
@@ -46,7 +46,7 @@ const Sidebar = () => {
                 </div>
             </div>
             {/* boton menu */}
-            <button onClick={() => setShowMenu(!showMenu)} className='lg:hidden fixed right-4 bottom-4 text-2xl bg-primary-900 p-2.5 rounded-full text-white'>
+            <button onClick={() => setShowMenu(!showMenu)} className='lg:hidden fixed right-4 bottom-4 text-2xl bg-primary-900 p-2.5 rounded-full text-white z-50'>
                 {showMenu ? <RiCloseFill/> : <RiMenu3Line/>}
             </button>
         </>
